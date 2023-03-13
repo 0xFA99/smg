@@ -1,0 +1,52 @@
+# /etc/fstab: static file system information.
+#
+# noatime turns off atimes for increased performance (atimes normally aren't 
+# needed); notail increases performance of ReiserFS (at the expense of storage 
+# efficiency).  It's safe to drop the noatime options if you want and to 
+# switch between notail / tail freely.
+#
+# The root filesystem should have a pass number of either 0 or 1.
+# All other filesystems should have a pass number of 0 or greater than 1.
+#
+# See the manpage fstab(5) for more information.
+#
+
+# <fs>			<mountpoint>	<type>		<opts>		<dump/pass>
+
+# NOTE: If your BOOT partition is ReiserFS, add the notail option to opts.
+#
+# NOTE: Even though we list ext4 as the type here, it will work with ext2/ext3
+#       filesystems.  This just tells the kernel to use the ext4 driver.
+#
+# NOTE: You can use full paths to devices like /dev/sda3, but it is often
+#       more reliable to use filesystem labels or UUIDs. See your filesystem
+#       documentation for details on setting a label. To obtain the UUID, use
+#       the blkid(8) command.
+
+#LABEL=boot		/boot		ext4		noauto,noatime	1 2
+#UUID=58e72203-57d1-4497-81ad-97655bd56494		/		ext4		noatime		0 1
+#LABEL=swap		none		swap		sw		0 0
+#/dev/cdrom		/mnt/cdrom	auto		noauto,ro	0 0
+/dev/sda5               /               f2fs            rw,lazytime,relatime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,flush_merge,extent_cache,mode=adaptive,active_logs=6,alloc_mode=default,checkpoint_merge,fsync_mode=posix,discard_unit=block,memory=normal 0 1
+
+/dev/sdb1               /boot           vfat            rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro 0 2
+
+# System TEMPFS
+tmpfs			/run		tmpfs		rw,nosuid,nodev,mode=0755,size=512M		0 0
+tmpfs			/dev/shm	tmpfs		rw,nosuid,nodev,noexec,size=512M		0 0
+tmpfs			/tmp		tmpfs		rw,noatime,mode=1777				0 0
+
+# Gentoo Extended Data on /dev/sda2 [HDD] 50GB
+PARTUUID="f577c2a1-02"		/home/fajar/.cache		btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,subvol=home_cache		0 0
+PARTUUID="f577c2a1-02"		/usr/src			btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,subvol=usr_src		0 0
+PARTUUID="f577c2a1-02"		/var/cache/distfiles		btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,subvol=distfiles		0 0
+PARTUUID="f577c2a1-02"		/var/tmp			btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,subvol=var_tmp		0 0
+
+# Data on /dev/sdb6 [HDD] 100GB
+# PARTUUID=""		/		btrfs		noatime,clear_cache_autodefrag,compress-force=zstd:1,commit=7 0 0
+PARTUUID="f577c2a1-06"		/home/fajar/Documents		btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,commit=7,subvol=Documents	0 0
+PARTUUID="f577c2a1-06"		/home/fajar/Downloads		btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,commit=7,subvol=Downloads	0 0
+PARTUUID="f577c2a1-06"		/home/fajar/Music		btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,commit=7,subvol=Music	0 0
+PARTUUID="f577c2a1-06"		/home/fajar/Pictures		btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,commit=7,subvol=Pictures	0 0
+PARTUUID="f577c2a1-06"		/home/fajar/Videos		btrfs		noatime,clear_cache,autodefrag,compress-force=zstd:1,commit=7,subvol=Videos	0 0
+
