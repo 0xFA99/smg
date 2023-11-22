@@ -1,0 +1,6 @@
+dev-util/clion					IDEA IDEA_Academic IDEA_Classroom IDEA_OpenSource IDEA_Personal
+net-im/discord					all-rights-reserved
+sys-firmware/intel-microcode	intel-ucode
+sys-kernel/linux-firmware		@BINARY-REDISTRIBUTABLE
+
+www-client/google-chrome google-chrome
